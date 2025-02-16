@@ -18,20 +18,21 @@ export default function MaresList() {
   }, []);
 
   if (!selections) { 
-    return <div className="flex flex-col">
-    <div className="flex flex-col">
-      <h1 className="text-3xl font-bold mb-4">Mare of the Day</h1>
-      <p className="h-[100px] mb-4">Loading...</p>
-      <p className="text-2xl mb-4"> </p>
-      <h1 className="text-3xl font-bold mb-4">M.6. of the Week</h1>
-      <p className="h-[100px] mb-4">Loading...</p>
-      <p className="text-2xl mb-4"> </p>
-      <h1 className="text-3xl font-bold mb-4">Mare of Interest</h1>
-      <p className="h-[100px] mb-4">Loading...</p>
-      <p className="text-2xl mb-4"> </p>
-      <p>Loading...</p>
-    </div>
-  </div>;
+    return (
+        <div className="flex flex-col">
+          <div className="flex flex-col items-center">
+            <h1 className="text-3xl font-bold mb-4">Mare of the Day</h1>
+            <div className="h-32 w-32 bg-gray-200 rounded-full mb-4"></div>
+            <h2 className="text-2xl mb-4">Loading</h2>
+            <h1 className="text-3xl font-bold mb-4">M.6. of the Week</h1>
+            <div className="h-32 w-32 bg-gray-200 rounded-full mb-4"></div>
+            <h2 className="text-2xl mb-4">Loading</h2>
+            <h1 className="text-3xl font-bold mb-4">Mare of Interest</h1>
+            <div className="h-32 w-32 bg-gray-200 rounded-full mb-4"></div>
+            <h2 className="text-2xl mb-4">Loading</h2>
+          </div>
+        </div>
+      );
   }
 
   return <div className="flex flex-col">
