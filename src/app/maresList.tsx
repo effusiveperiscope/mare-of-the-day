@@ -1,6 +1,7 @@
 'use client'
-import { useEffect, useState } from "react";
+import { ComponentType, useEffect, useState, createElement } from "react";
 import { selectionsFromClient } from "./mares";
+import { motion } from "motion/react";
 
 export default function MaresList() {
   const [selections, setSelections] = useState<any>(null);
@@ -36,11 +37,29 @@ export default function MaresList() {
   return <div className="flex flex-col">
     <div className="flex flex-col">
       <h1 className="text-3xl font-bold mb-4">Mare of the Day</h1>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       {selections['mare_of_the_day']}
+    </motion.div>
       <h1 className="text-3xl font-bold mb-4">M.6. of the Week</h1>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
       {selections['m6_of_the_week']}
+    </motion.div>
       <h1 className="text-3xl font-bold mb-4">Mare of Interest</h1>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.5 }}
+    >
       {selections['mare_of_interest']}
+    </motion.div>
     </div>
   </div>;
 }

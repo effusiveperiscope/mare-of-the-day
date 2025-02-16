@@ -8,7 +8,7 @@ export default function Home() {
       <div className="absolute inset-0 -z-10">
         <Image
         src="/images/bg.png"
-        className="blur-md w-full h-auto"
+        className="blur-md h-full w-auto object-cover"
         width="1000"
         height="1000"
         alt="Background"/>
