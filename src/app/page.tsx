@@ -1,5 +1,6 @@
 import Image from "next/image";
 import MaresList from "./maresList";
+import EpisodesList from "./episodesList";
 
 export default function Home() {
   return (
@@ -17,6 +18,8 @@ export default function Home() {
           <h1 className="text-4xl font-bold mb-4 marquee-content">MARES MARES MARES</h1>
         </div>
         <MaresList />
+        <hr className="border border-gray-300 mb-4"></hr>
+        <EpisodesList />
       </div>
     </div>
   );

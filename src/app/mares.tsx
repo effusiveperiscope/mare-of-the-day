@@ -1,14 +1,7 @@
 // Hardcoded mares!
 'use server';
 import Image from "next/image";
-import dotenv from 'dotenv';
-import { time } from "console";
-
-dotenv.config();
-
-const seed = process.env.MARES_SEED || 'mares';
-
-var seedrandom = require('seedrandom');
+import { clampNow, dailySelect, weeklySelect } from "./utils";
 
 const mares: Record<string, { image: string }> = {
     'Twilight Sparkle': {
@@ -107,34 +100,6 @@ const maresArray = [...voicedArray, 'Sassy Saddles', 'Ms. Harshwhinny',
     'Minuette'
 ]
 
-function weeklySelect(array: string[], now : Date) {
-    const weekTimestamp = Math.floor(
-        (now.getTime() - new Date('1970-01-04').getTime()) /
-        (7 * 24 * 60 * 60 * 1000)); // Weeks since January 4, 1970
-    const randomIndex = Math.floor(
-        seedrandom(seed + weekTimestamp)() * array.length);
-    return array[randomIndex];
-}
-
-function dailySelect(array: string[], now: Date, extraSeed: string = '') {
-    const dayTimestamp = Math.floor(
-        (now.getTime() - new Date('1970-01-01').getTime()) /
-        (24 * 60 * 60 * 1000)); // Days since January 1, 1970
-    const randomIndex = Math.floor(
-        seedrandom(seed + dayTimestamp + extraSeed)() * array.length);
-    return array[randomIndex];
-}
-
-function secondSelect(array: string[], now: Date) {
-    const secondTimestamp = Math.floor(
-        (now.getTime() - new Date('1970-01-01').getTime()) /
-        (1000)); // Seconds since January 1, 1970
-    const randomIndex = Math.floor(
-        seedrandom(seed + secondTimestamp)() * array.length);
-    // console.log(randomIndex);
-    return array[randomIndex];
-}
-
 function mareDisplay(mare: string) {
     return (
         <div className="flex flex-col items-center">
@@ -147,11 +112,7 @@ function mareDisplay(mare: string) {
 }
 
 export async function selectionsFromClient(now: Date) {
-    const serverNow = new Date();
-    const oneDay = 24 * 60 * 60 * 1000;
-    const lowerBound = new Date(serverNow.getTime() - oneDay);
-    const upperBound = new Date(serverNow.getTime() + oneDay);
-    now = new Date(Math.min(upperBound.getTime(), Math.max(lowerBound.getTime(), now.getTime())));
+    now = clampNow(now);
 
     return {'mare_of_the_day': mareDisplay(dailySelect(maresArray, now, 'motd')),
         'm6_of_the_week': mareDisplay(weeklySelect(mane6Array, now)),
