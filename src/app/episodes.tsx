@@ -16,11 +16,13 @@ const s1_2_contents = synopsis_contents.slice(0, 2).flat();
 const s3_6_contents = synopsis_contents.slice(2, 6).flat();
 const s7_9_contents = synopsis_contents.slice(6, 9).flat();
 
-export async function episodesFromClient(now: Date) {
+export async function episodesFromClient(now: Date, tzOffset: number) {
     now = clampNow(now);
+    tzOffset = Math.max(Math.min(tzOffset, 60 * 60 * 1000), -60 * 60 * 1000);
+
     return {
-        's1_2': dailySelect(s1_2_contents, now),
-        's3_6': dailySelect(s3_6_contents, now),
-        's7_9': dailySelect(s7_9_contents, now)
+        's1_2': dailySelect(s1_2_contents, now, tzOffset),
+        's3_6': dailySelect(s3_6_contents, now, tzOffset),
+        's7_9': dailySelect(s7_9_contents, now, tzOffset)
     }
 }

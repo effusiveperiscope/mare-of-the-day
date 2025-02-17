@@ -11,7 +11,7 @@ export default function EpisodesList() {
       // Adjust the date for testing different days
       //now.setDate(now.getDate() + 1); // Add 1 day
 
-      const data = await episodesFromClient(now);
+      const data = await episodesFromClient(now, now.getTimezoneOffset() * 60 * 1000);
       setSelections(data);
     }
     fetchEps();

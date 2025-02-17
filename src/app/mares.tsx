@@ -111,10 +111,11 @@ function mareDisplay(mare: string) {
     );
 }
 
-export async function selectionsFromClient(now: Date) {
+export async function selectionsFromClient(now: Date, tzOffset: number) {
     now = clampNow(now);
+    tzOffset = Math.max(Math.min(tzOffset, 60 * 60 * 1000), -60 * 60 * 1000);
 
-    return {'mare_of_the_day': mareDisplay(dailySelect(maresArray, now, 'motd')),
-        'm6_of_the_week': mareDisplay(weeklySelect(mane6Array, now)),
-        'mare_of_interest': mareDisplay(dailySelect(voicedArray, now, 'moi'))};
+    return {'mare_of_the_day': mareDisplay(dailySelect(maresArray, now, tzOffset, 'motd')),
+        'm6_of_the_week': mareDisplay(weeklySelect(mane6Array, now, tzOffset)),
+        'mare_of_interest': mareDisplay(dailySelect(voicedArray, now, tzOffset, 'moi'))};
     }

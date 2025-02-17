@@ -13,18 +13,20 @@ export function clampNow(now: Date) {
     return now;
 }
 
-export function weeklySelect<T>(array: T[], now : Date) {
+// tzOffset in ms
+export function weeklySelect<T>(array: T[], now : Date, tzOffset: number) {
     const weekTimestamp = Math.floor(
-        (now.getTime() - new Date('1970-01-04').getTime()) /
+        (now.getTime() - new Date('1970-01-04').getTime() + tzOffset) /
         (7 * 24 * 60 * 60 * 1000)); // Weeks since January 4, 1970
     const randomIndex = Math.floor(
         seedrandom(seed + weekTimestamp)() * array.length);
     return array[randomIndex];
 }
 
-export function dailySelect<T>(array: T[], now: Date, extraSeed: string = '') {
+// tzOffset in ms
+export function dailySelect<T>(array: T[], now: Date, tzOffset: number, extraSeed: string = '') {
     const dayTimestamp = Math.floor(
-        (now.getTime() - new Date('1970-01-01').getTime()) /
+        (now.getTime() - new Date('1970-01-01').getTime() + tzOffset) /
         (24 * 60 * 60 * 1000)); // Days since January 1, 1970
     const randomIndex = Math.floor(
         seedrandom(seed + dayTimestamp + extraSeed)() * array.length);

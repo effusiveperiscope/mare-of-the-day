@@ -1,8 +1,21 @@
 import OpenAI from 'openai';
-import { sqlite3 } from 'sqlite3';
 import { readFileSync, existsSync } from 'fs';
+import { writeOutDate } from './text';
+import { selectionsFromClient } from './mares';
 
 const PROFILES_DIR = 'marescripts/profiles/'
+
+const sqlite3 = require('sqlite3').verbose();
+const STORIES_DB = 'stories.db'
+
+const db = new sqlite3.Database(STORIES_DB)
+db.run(`
+    CREATE TABLE IF NOT EXISTS stories (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        story TEXT
+        date TEXT
+    )
+`)
 
 async function generateStory(mares: string[]) {
     var prompt = `

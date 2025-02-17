@@ -13,7 +13,7 @@ export default function MaresList() {
       // Adjust the date for testing different days
       //now.setDate(now.getDate() + 1); // Add 1 day
 
-      const data = await selectionsFromClient(now);
+      const data = await selectionsFromClient(now, now.getTimezoneOffset() * 60 * 1000);
       setSelections(data);
     }
 
