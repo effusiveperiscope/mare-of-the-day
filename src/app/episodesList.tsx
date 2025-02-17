@@ -21,8 +21,6 @@ export default function EpisodesList() {
         <p>Loading...</p>
     );
 
-    console.log(selections)
-
     function makeSelection(selection: any) {
         return <p>
             <b><u>
