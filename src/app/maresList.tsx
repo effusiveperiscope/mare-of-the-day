@@ -2,15 +2,18 @@
 import { ComponentType, useEffect, useState, createElement } from "react";
 import { selectionsFromClient } from "./mares";
 import { motion } from "motion/react";
+import { writeOutDate } from "./text";
 
 export default function MaresList() {
   const [selections, setSelections] = useState<any>(null);
 
   useEffect(() => {
     async function fetchMares() {
-      const now = new Date();
-      const timezoneOffset = now.getTimezoneOffset() * 60 * 1000;
-      const data = await selectionsFromClient(timezoneOffset);
+      var now = new Date();
+      // Adjust the date for testing different days
+      //now.setDate(now.getDate() + 1); // Add 1 day
+
+      const data = await selectionsFromClient(now);
       setSelections(data);
     }
 
@@ -20,6 +23,8 @@ export default function MaresList() {
   if (!selections) { 
     return (
         <div className="flex flex-col">
+          <p>{writeOutDate(new Date())}</p>
+          <hr className="border border-gray-300 mb-4"></hr>
           <div className="flex flex-col items-center">
             <h1 className="text-3xl font-bold mb-4">Mare of the Day</h1>
             <div className="h-32 w-32 bg-gray-200 rounded-full mb-4"></div>
@@ -36,6 +41,8 @@ export default function MaresList() {
   }
 
   return <div className="flex flex-col">
+    <p>{writeOutDate(new Date())}</p>
+    <hr className="border border-gray-300 mb-4"></hr>
     <div className="flex flex-col">
       <h1 className="text-3xl font-bold mb-4">Mare of the Day</h1>
       <AnimatedMare duration={0.5}>

@@ -107,30 +107,30 @@ const maresArray = [...voicedArray, 'Sassy Saddles', 'Ms. Harshwhinny',
     'Minuette'
 ]
 
-function weeklySelect(array: string[], tzOffset: number) {
+function weeklySelect(array: string[], now : Date) {
     const weekTimestamp = Math.floor(
-        (new Date().getTime() - new Date('1970-01-04').getTime() + tzOffset) /
+        (now.getTime() - new Date('1970-01-04').getTime()) /
         (7 * 24 * 60 * 60 * 1000)); // Weeks since January 4, 1970
     const randomIndex = Math.floor(
         seedrandom(seed + weekTimestamp)() * array.length);
     return array[randomIndex];
 }
 
-function dailySelect(array: string[], tzOffset: number) {
+function dailySelect(array: string[], now: Date, extraSeed: string = '') {
     const dayTimestamp = Math.floor(
-        (new Date().getTime() - new Date('1970-01-04').getTime() + tzOffset) /
-        (24 * 60 * 60 * 1000)); // Days since January 4, 1970
+        (now.getTime() - new Date('1970-01-01').getTime()) /
+        (24 * 60 * 60 * 1000)); // Days since January 1, 1970
     const randomIndex = Math.floor(
-        seedrandom(seed + dayTimestamp)() * array.length);
+        seedrandom(seed + dayTimestamp + extraSeed)() * array.length);
     return array[randomIndex];
 }
 
-function secondSelect(array: string[], tzOffset: number) {
+function secondSelect(array: string[], now: Date) {
     const secondTimestamp = Math.floor(
-        (new Date().getTime() - new Date('1970-01-04').getTime()) /
-        (1000)); // Seconds since January 4, 1970
+        (now.getTime() - new Date('1970-01-01').getTime()) /
+        (1000)); // Seconds since January 1, 1970
     const randomIndex = Math.floor(
-        seedrandom(seed + secondTimestamp + tzOffset)() * array.length);
+        seedrandom(seed + secondTimestamp)() * array.length);
     // console.log(randomIndex);
     return array[randomIndex];
 }
@@ -146,8 +146,14 @@ function mareDisplay(mare: string) {
     );
 }
 
-export async function selectionsFromClient(tzOffset: number) {
-    return {'mare_of_the_day': mareDisplay(dailySelect(maresArray, tzOffset)),
-        'm6_of_the_week': mareDisplay(weeklySelect(mane6Array, tzOffset)),
-        'mare_of_interest': mareDisplay(dailySelect(voicedArray, tzOffset))};
+export async function selectionsFromClient(now: Date) {
+    const serverNow = new Date();
+    const oneDay = 24 * 60 * 60 * 1000;
+    const lowerBound = new Date(serverNow.getTime() - oneDay);
+    const upperBound = new Date(serverNow.getTime() + oneDay);
+    now = new Date(Math.min(upperBound.getTime(), Math.max(lowerBound.getTime(), now.getTime())));
+
+    return {'mare_of_the_day': mareDisplay(dailySelect(maresArray, now, 'motd')),
+        'm6_of_the_week': mareDisplay(weeklySelect(mane6Array, now)),
+        'mare_of_interest': mareDisplay(dailySelect(voicedArray, now, 'moi'))};
     }
