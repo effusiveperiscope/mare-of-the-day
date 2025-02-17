@@ -19,3 +19,23 @@ body {
   background: var(--background);
   font-family: serif;
 }
+
+@keyframes marquee {
+    0% {
+        transform: translateX(110%);
+    }
+    100% {
+        transform: translateX(-110%);
+    }
+}
+
+.marquee-container {
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    animation: marquee 5s linear infinite;
+}
+
+.marquee-content {
+    display: inline-block;
+}
