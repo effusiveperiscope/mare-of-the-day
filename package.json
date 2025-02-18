@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "better-sqlite3": "^11.8.1",
-    "dompurify": "^3.2.4",
     "dotenv": "^16.4.7",
     "fs": "^0.0.1-security",
+    "isomorphic-dompurify": "^2.21.0",
     "motion": "^12.4.3",
     "next": "15.1.7",
     "openai": "^4.85.1",

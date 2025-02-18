@@ -39,3 +39,7 @@ body {
 .marquee-content {
     display: inline-block;
 }
+
+#news_story p {
+    margin-bottom: 1rem;
+}

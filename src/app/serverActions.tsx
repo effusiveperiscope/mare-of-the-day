@@ -2,7 +2,7 @@
 import { getEpisodeSelections, getMareSelections, getStories } from './db';
 import { getEpisodeData } from './episodes';
 import { mareDisplay } from './ui/mareDisplay';
-import DOMPurify from 'dompurify';
+import DOMPurify from 'isomorphic-dompurify';
 
 export async function serverGetMareSelections(nominalDate: string) {
     const selections = await getMareSelections(nominalDate);
@@ -35,6 +35,6 @@ export async function serverGetEpisodeSelections(nominalDate: string) {
 export async function serverGetStories(nominalDate: string) {
     const story = await getStories(nominalDate);
     if (!story) { return null; }
-    const sanitized = DOMPurify.sanitize(story);
-    return <div dangerouslySetInnerHTML={{ __html: sanitized }} />;
+    const sanitized = DOMPurify.sanitize(story.story);
+    return sanitized;
 }
