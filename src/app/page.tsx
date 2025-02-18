@@ -15,7 +15,7 @@ export default function Home() {
       height="10"
       alt="Background" priority />
       </div>
-      <div className="w-4/5 bg-white/90 p-6 shadow-lg text-center overflow-hidden">
+      <div className="w-9/10 bg-white/90 p-6 shadow-lg text-center overflow-hidden">
         {/* <div className="marquee-container"> */}
           {/* <h1 className="text-4xl font-bold mb-4 marquee-content">MARES MARES MARES</h1> */}
         {/* </div> */}

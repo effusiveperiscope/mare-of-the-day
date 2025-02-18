@@ -30,7 +30,7 @@ export default function EpisodesList() {
     }
 
     return (
-        <div className="text-xl m-6">
+        <div className="text-lg m-6">
         <div className="max-w-3xl ml-auto mr-auto text-justify">
           
         <h2 className="text-2xl mb-4 font-bold">Daily Episode Selection</h2>

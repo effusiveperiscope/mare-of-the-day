@@ -20,7 +20,7 @@ export default function Story() {
     );
 
     return (
-        <div className="text-xl m-6">
+        <div className="text-lg m-6">
         <div className="max-w-3xl ml-auto mr-auto text-justify" id="news_story">
          <div dangerouslySetInnerHTML={{ __html: selections }} />
         </div>
