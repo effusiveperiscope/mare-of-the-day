@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from "react";
-import { episodesFromClient } from "./episodes";
+import { serverGetEpisodeSelections } from '../serverActions';
+import { writeOutDate } from "../text";
 
 export default function EpisodesList() {
   const [selections, setSelections] = useState<any>(null);
@@ -8,10 +9,7 @@ export default function EpisodesList() {
   useEffect(() => {
     async function fetchEps() {
       var now = new Date();
-      // Adjust the date for testing different days
-      //now.setDate(now.getDate() + 1); // Add 1 day
-
-      const data = await episodesFromClient(now, now.getTimezoneOffset() * 60 * 1000);
+      const data = await serverGetEpisodeSelections(writeOutDate(now));
       setSelections(data);
     }
     fetchEps();
@@ -22,6 +20,9 @@ export default function EpisodesList() {
     );
 
     function makeSelection(selection: any) {
+      if (selection === null) {
+        return <p>Missing info</p>;
+      }
         return <p>
             <b><u>
                 <a href={`https://fim.heartshine.gay/?s=${selection.season}&e=${selection.episode}`}>

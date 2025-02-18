@@ -1,38 +1,37 @@
 import OpenAI from 'openai';
-import { readFileSync, existsSync } from 'fs';
-import { writeOutDate } from './text';
-import { selectionsFromClient } from './mares';
+import { generateSlug } from "random-word-slugs";
+import profilesData from './profiles.json';
+
+type ProfileData = {
+    profile: string;
+    quotes: string[]
+}
+type ProfilesData = {
+    [key: string]: ProfileData
+}
 
 const PROFILES_DIR = 'marescripts/profiles/'
+const typedProfilesData: ProfilesData = profilesData as ProfilesData
 
-const sqlite3 = require('sqlite3').verbose();
-const STORIES_DB = 'stories.db'
-
-const db = new sqlite3.Database(STORIES_DB)
-db.run(`
-    CREATE TABLE IF NOT EXISTS stories (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        story TEXT
-        date TEXT
-    )
-`)
-
-async function generateStory(mares: string[]) {
+export async function generateStory(mares: string[]): Promise<string> {
     var prompt = `
     Generate a fictional news story involving the mares: ${mares}. 
-    You may format your response using basic HTML tags, e.g. <b>Bold</b>. 
+
+    You may format your response using basic HTML formatting tags, e.g. <b>Bold</b>,
+    but do not use semantic tags like <article> or <code>. Do not include a newspaper title.
+
+    You may use the following randomly generated slug for inspiration, but
+    do not include it in the text: ${generateSlug(5)}
+
     You will be given character profiles to assist you in your task.
     `
 
     for (const mare of mares) {
-        const profile_file = PROFILES_DIR + mare + '.json'
-        if (!existsSync(profile_file)) {
+        const profile = typedProfilesData[mare];
+        if (!profile) {
             console.log('Could not find profile for mare '+mare)
             continue;
         }
-        const profile = JSON.parse(readFileSync(profile_file,
-            { encoding: 'utf-8' }
-        ))
         prompt += `\n\nProfile for ${mare}: \n${JSON.stringify(profile, null, 2)}\n\n`
     }
 
@@ -50,7 +49,7 @@ async function generateStory(mares: string[]) {
         ],
     });
     if (completion.choices) {
-        return completion.choices[0].message.content
+        return completion.choices[0].message.content!
     } else {
         console.log(completion)
         throw new Error('No choices received')

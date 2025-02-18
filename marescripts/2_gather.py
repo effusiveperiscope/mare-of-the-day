@@ -385,3 +385,14 @@ for mare in MARES_TO_COLLECT:
         json.dump(profile, f, indent=4)
 
 # %%
+# 4. Condense profiles
+profiles = {}
+for name in os.listdir(PROFILES_FOLDER):
+    with open(f'profiles/{name}', 'r', encoding='utf-8') as f:
+        profile = json.load(f)
+    char_name = name.split('.')[0]
+    profiles[char_name] = profile
+
+with open('profiles.json', 'w', encoding='utf-8') as f:
+    json.dump(profiles, f, indent=4)
+# %%

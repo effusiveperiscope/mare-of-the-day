@@ -1,9 +1,8 @@
-// Hardcoded mares!
-'use server';
-import Image from "next/image";
-import { clampNow, dailySelect, weeklySelect } from "./utils";
+import { getMareSelections } from './db';
+import { mareDisplay } from './ui/mareDisplay';
+import { weeklySelect, dailySelect } from './utils';
 
-const mares: Record<string, { image: string }> = {
+export const mares: Record<string, { image: string }> = {
     'Twilight Sparkle': {
         'image': '/images/twilight_sparkle.png',
     },
@@ -100,22 +99,28 @@ const maresArray = [...voicedArray, 'Sassy Saddles', 'Ms. Harshwhinny',
     'Minuette'
 ]
 
-function mareDisplay(mare: string) {
-    return (
-        <div className="flex flex-col items-center">
-            <Image 
-                src={mares[mare].image} alt={`Image of ${mare}`} 
-                className="rounded-full mb-4 h-32 w-32" width="100" height="100"/>
-            <h2 className="text-2xl mb-4">{mare}</h2>
-        </div>
-    );
+export function rawSelections(timeDate: Date, nominalDate: string) {
+    return {
+        'mare_of_the_day': dailySelect(maresArray, timeDate, nominalDate, 'motd'),
+        'm6_of_the_week': weeklySelect(mane6Array, timeDate, 'm6otw'),
+        'mare_of_interest': dailySelect(voicedArray, timeDate, nominalDate, 'moi'),
+    }
 }
 
-export async function selectionsFromClient(now: Date, tzOffset: number) {
-    now = clampNow(now);
-    tzOffset = Math.max(Math.min(tzOffset, 60 * 60 * 1000), -60 * 60 * 1000);
+export function getMare(mare: string) {
+    return mares[mare];
+}
 
-    return {'mare_of_the_day': mareDisplay(dailySelect(maresArray, now, tzOffset, 'motd')),
-        'm6_of_the_week': mareDisplay(weeklySelect(mane6Array, now, tzOffset)),
-        'mare_of_interest': mareDisplay(dailySelect(voicedArray, now, tzOffset, 'moi'))};
+export async function getSelections(nominalDate: string) {
+    const selections = await getMareSelections(nominalDate);
+    if (!selections) return {
+        'mare_of_the_day': null,
+        'm6_of_the_week': null,
+        'mare_of_interest': null,
     }
+    return {
+        'mare_of_the_day': mareDisplay(selections.mare_of_the_day),
+        'm6_of_the_week': mareDisplay(selections.m6_of_the_week),
+        'mare_of_interest': mareDisplay(selections.mare_of_interest),
+    }
+}

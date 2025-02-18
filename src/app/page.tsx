@@ -1,7 +1,8 @@
 import Image from "next/image";
-import MaresList from "./maresList";
-import EpisodesList from "./episodesList";
-
+import MaresList from "./ui/maresList";
+import EpisodesList from "./ui/episodesList";
+import {} from "./work";
+{} 
 export default function Home() {
   return (
     <div className="relative w-full min-h-screen flex justify-center items-center p-10">

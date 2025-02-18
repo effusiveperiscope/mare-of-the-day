@@ -1,8 +1,8 @@
 'use client'
 import { useEffect, useState } from "react";
-import { selectionsFromClient } from "./mares";
+import { serverGetMareSelections } from '../serverActions';
 import { motion } from "motion/react";
-import { writeOutDate } from "./text";
+import { writeOutDate } from "../text";
 
 export default function MaresList() {
   const [selections, setSelections] = useState<any>(null);
@@ -10,10 +10,7 @@ export default function MaresList() {
   useEffect(() => {
     async function fetchMares() {
       var now = new Date();
-      // Adjust the date for testing different days
-      //now.setDate(now.getDate() + 1); // Add 1 day
-
-      const data = await selectionsFromClient(now, now.getTimezoneOffset() * 60 * 1000);
+      const data = await serverGetMareSelections(writeOutDate(now));
       setSelections(data);
     }
 
