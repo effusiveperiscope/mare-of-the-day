@@ -42,3 +42,4 @@ next-env.d.ts
 
 *.kra
 *.kra~
+stories.db
