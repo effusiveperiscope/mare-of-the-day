@@ -1,7 +1,8 @@
 
 const STORIES_DB = 'stories.db'
 
-const db = require('better-sqlite3')(STORIES_DB, {});
+import BetterSqlite3 from 'better-sqlite3';
+const db = new BetterSqlite3(STORIES_DB, {});
 db.prepare(`CREATE TABLE IF NOT EXISTS stories (
         id INTEGER PRIMARY KEY,
         story TEXT,

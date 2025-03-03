@@ -1,15 +1,16 @@
 'use client'
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { serverGetMareSelections } from '../serverActions';
 import { motion } from "motion/react";
 import { writeOutDate } from "../text";
 
 export default function MaresList() {
-  const [selections, setSelections] = useState<any>(null);
+  const [selections, setSelections] = useState<
+    null|Record<string, JSX.Element|null>>(null);
 
   useEffect(() => {
     async function fetchMares() {
-      var now = new Date();
+      const now = new Date();
       const data = await serverGetMareSelections(writeOutDate(now));
       setSelections(data);
     }

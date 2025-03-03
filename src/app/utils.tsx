@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-var seedrandom = require('seedrandom');
+import seedrandom from 'seedrandom';
 
 dotenv.config();
 const seed = process.env.MARES_SEED || 'mares';

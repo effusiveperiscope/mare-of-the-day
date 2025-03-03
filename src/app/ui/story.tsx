@@ -4,11 +4,11 @@ import { serverGetStories } from '../serverActions';
 import { writeOutDate } from "../text";
 
 export default function Story() {
-  const [selections, setSelections] = useState<any>(null);
+  const [selections, setSelections] = useState<null|string>(null);
 
   useEffect(() => {
     async function fetchEps() {
-      var now = new Date();
+      const now = new Date();
       const data = await serverGetStories(writeOutDate(now));
       setSelections(data);
     }

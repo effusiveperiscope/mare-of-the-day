@@ -2,7 +2,8 @@ import { getMareSelections } from './db';
 import { mareDisplay } from './ui/mareDisplay';
 import { weeklySelect, dailySelect } from './utils';
 
-export const mares: Record<string, { image: string }> = {
+export type Mare = { image: string };
+export const mares: Record<string, Mare> = {
     'Twilight Sparkle': {
         'image': '/images/twilight_sparkle.png',
     },
@@ -111,8 +112,12 @@ export function getMare(mare: string) {
     return mares[mare];
 }
 
+export type MareSelections = { 
+    mare_of_the_day: string,
+    m6_of_the_week: string, 
+    mare_of_interest: string };
 export async function getSelections(nominalDate: string) {
-    const selections = await getMareSelections(nominalDate);
+    const selections = await getMareSelections(nominalDate) as MareSelections;
     if (!selections) return {
         'mare_of_the_day': null,
         'm6_of_the_week': null,

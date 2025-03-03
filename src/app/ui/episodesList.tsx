@@ -1,14 +1,15 @@
 'use client';
 import { useEffect, useState } from "react";
-import { serverGetEpisodeSelections } from '../serverActions';
+import { serverGetEpisodeSelections, EpisodeSelections } from '../serverActions';
 import { writeOutDate } from "../text";
+import { Episode } from "../episodes";
 
 export default function EpisodesList() {
-  const [selections, setSelections] = useState<any>(null);
+  const [selections, setSelections] = useState<null|EpisodeSelections>(null);
 
   useEffect(() => {
     async function fetchEps() {
-      var now = new Date();
+      const now = new Date();
       const data = await serverGetEpisodeSelections(writeOutDate(now));
       setSelections(data);
     }
@@ -19,7 +20,7 @@ export default function EpisodesList() {
         <p>Loading...</p>
     );
 
-    function makeSelection(selection: any) {
+    function makeSelection(selection: Episode|null) {
       if (selection === null) {
         return <p>Missing info</p>;
       }

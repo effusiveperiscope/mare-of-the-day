@@ -10,11 +10,10 @@ type ProfilesData = {
     [key: string]: ProfileData
 }
 
-const PROFILES_DIR = 'marescripts/profiles/'
 const typedProfilesData: ProfilesData = profilesData as ProfilesData
 
 export async function generateStory(mares: string[]): Promise<string> {
-    var prompt = `
+    let prompt = `
     Generate a fictional news story involving the mares: ${mares}. 
 
     You may format your response using basic HTML formatting tags, e.g. <b>Bold</b>,

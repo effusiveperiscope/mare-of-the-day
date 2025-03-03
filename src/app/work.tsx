@@ -24,7 +24,7 @@ async function work() {
         }
         // 2. Generate story
         if (!await getStories(datestr)) {
-            const mareSelections = await getMareSelections(datestr)
+            const mareSelections = await getMareSelections(datestr) as Record<string, string>;
             const story = await generateStory([mareSelections.mare_of_the_day, mareSelections.m6_of_the_week, mareSelections.mare_of_interest,])
             writeStory(story, datestr);
         }
