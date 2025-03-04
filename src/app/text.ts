@@ -1,6 +1,6 @@
 export function writeOutDate(date: Date) {
   const day = date.getDate();
-  const month = date.toLocaleString('default', { month: 'long' });
+  const month = date.toLocaleString('en-US', { month: 'long' });
   const year = date.getFullYear();
 
   const suffix = getDaySuffix(day);
