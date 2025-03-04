@@ -4,6 +4,7 @@ import EpisodesList from "./ui/episodesList";
 import {} from "./work";
 import Story from "./ui/story";
 import { writeOutDate } from "./text";
+import DateDisplay from "./date_display";
 export default function Home() {
   return (
     <div className="relative w-full min-h-screen flex justify-center items-center p-10">
@@ -21,7 +22,7 @@ export default function Home() {
         {/* </div> */}
 
           <h1 className="text-4xl font-bold mb-4">MARES MARES MARES</h1>
-        <p>{writeOutDate(new Date())}</p>
+        <DateDisplay />
         <hr className="border border-gray-300 mb-4"></hr>
         <div className="flex flex-col lg:flex-row place-content-center items-center">
         <MaresList />
