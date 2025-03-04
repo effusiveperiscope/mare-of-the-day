@@ -3,7 +3,6 @@ import MaresList from "./ui/maresList";
 import EpisodesList from "./ui/episodesList";
 import {} from "./work";
 import Story from "./ui/story";
-import { writeOutDate } from "./text";
 import DateDisplay from "./date_display";
 export default function Home() {
   return (
