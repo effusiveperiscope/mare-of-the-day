@@ -5,7 +5,7 @@
 # %%
 # 1. Set up pony data
 MARES_TO_COLLECT = [
-     'Coco Pommel', 'Coloratura', 'Moondancer', 'Minuette'
+    "Saffron Masala", "Tree Hugger", "Dr. Fauna", "Windy Whistles", "Sapphire Shores", "Pear Butter", "Twilight Velvet", "Mrs. Shy", "Cookie Crumbles", "Cloudy Quartz", "Tempest Shadow", "Twinkleshine", "Lemon Hearts"
 ]
 PROFILES_FOLDER = 'profiles'
 OPENROUTER_MODEL_TO_USE = 'google/gemini-2.0-flash-exp:free'
@@ -14,7 +14,12 @@ COST_EST_OUTPUT = 0.30 # Per million tokens
 RATE_LIMIT_PER_MIN = 4 # We just use time.sleep() here to avoid tripping the 'requests per minute' rate limit on OpenRouter free models
 aliases = {
     'Trixie Lulamoon': 'The Great and Powerful Trixie',
-    'Moondancer': 'Moon Dancer'
+    'Moondancer': 'Moon Dancer',
+    'Mrs. Cake': "Mrs. Cake/Chiffon Swirl",
+    "Twilight Velvet": "Twilight's mom\nTwilight Velvet",
+    "Mrs. Shy": "Fluttershy's mother\nMrs. Shy",
+    "Cookie Crumbles": "Rarity's mom\nCookie Crumbles",
+    "Cloudy Quartz": "Pinkie's mom\nCloudy Quartz",
 }
 reverse_aliases = {v : k for k, v in aliases.items()}
 
@@ -390,9 +395,12 @@ profiles = {}
 for name in os.listdir(PROFILES_FOLDER):
     with open(f'profiles/{name}', 'r', encoding='utf-8') as f:
         profile = json.load(f)
-    char_name = name.split('.')[0]
+    char_name = '.'.join(name.split('.')[:-1])
     profiles[char_name] = profile
 
 with open('profiles.json', 'w', encoding='utf-8') as f:
     json.dump(profiles, f, indent=4)
 # %%
+# 5. Move profiles.json
+import shutil
+shutil.copy2('profiles.json', '../src/app/profiles.json')

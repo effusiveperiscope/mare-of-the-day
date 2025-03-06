@@ -81,6 +81,45 @@ export const mares: Record<string, Mare> = {
     },
     'Minuette': {
         'image': '/images/minuette.png',
+    },
+    'Saffron Masala': {
+        'image': '/images/saffron_masala.png',
+    },
+    'Tree Hugger': {
+        'image': '/images/tree_hugger.png',
+    },
+    'Dr. Fauna': {
+        'image': '/images/dr_fauna.png',
+    },
+    'Windy Whistles': { 
+        'image': '/images/windy_whistles.png',
+    },
+    'Sapphire Shores': {
+        'image': '/images/sapphire_shores.png',
+    },
+    'Pear Butter': {
+        'image': '/images/pear_butter.png',
+    },
+    'Twilight Velvet': {
+        'image': '/images/twilight_velvet.png',
+    },
+    'Mrs. Shy': {
+        'image': '/images/mrs_shy.png',
+    },
+    'Cookie Crumbles': {
+        'image': '/images/cookie_crumbles.png',
+    },
+    'Cloudy Quartz': {
+        'image': '/images/cloudy_quartz.png',
+    },
+    'Tempest Shadow': {
+        'image': '/images/tempest_shadow.png',
+    },
+    'Twinkleshine': {
+        'image': '/images/twinkleshine.png',
+    },
+    'Lemon Hearts': {
+        'image': '/images/lemon_hearts.png',
     }
 }
 
@@ -97,7 +136,9 @@ const voicedArray = [
 
 const maresArray = [...voicedArray, 'Sassy Saddles', 'Ms. Harshwhinny',
     'Sugar Belle', 'Lightning Dust', 'Coco Pommel', 'Coloratura', 'Moondancer',
-    'Minuette'
+    'Minuette', 'Saffron Masala', 'Tree Hugger', 'Dr. Fauna', 'Windy Whistles',
+    'Sapphire Shores', 'Pear Butter', 'Twilight Velvet', 'Mrs. Shy', 'Cookie Crumbles',
+    'Cloudy Quartz', 'Tempest Shadow', 'Twinkleshine', 'Lemon Hearts'
 ]
 
 export function rawSelections(timeDate: Date, nominalDate: string) {
