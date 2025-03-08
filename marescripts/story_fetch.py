@@ -151,7 +151,7 @@ def extract_stories(html_content):
 
 if __name__ == "__main__":
     content = get_fimfiction_page(query=
-        'words:<3000 #mlp-fim -#anthro -#fetish ( #everyone OR #teen ) -#human status:complete')
+        'words:<3000 #mlp-fim -#anthro -#fetish ( #everyone OR #teen ) -#human -#equestria-girls status:complete')
     
     if content:
         # Save raw HTML
