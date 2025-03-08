@@ -115,7 +115,7 @@ export async function generateReviews(): Promise<Review[]> {
     const stories = JSON.parse(data) as StoriesData[];
     const includeSpoilers = true;
 
-    let completions: Review[] = []
+    const completions: Review[] = []
 
     for (const story of stories) {
         console.log('Generating review for ' + story.title);
