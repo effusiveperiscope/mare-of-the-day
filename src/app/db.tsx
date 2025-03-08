@@ -22,9 +22,20 @@ db.prepare(`CREATE TABLE IF NOT EXISTS episodeSelections (
         s7_9 TEXT,
         date TEXT
     );`).run();
+db.prepare(`CREATE TABLE IF NOT EXISTS reviews (
+        id INTEGER PRIMARY KEY,
+        author TEXT,
+        title TEXT,
+        review TEXT,
+        selector_date TEXT
+    );`).run();
 
 export function getStories(datestr: string) {
     return db.prepare(`SELECT story FROM stories WHERE date = ?`).get(datestr);
+}
+
+export function getReviews(datestr: string) {
+    return db.prepare(`SELECT author, title, review FROM reviews WHERE selector_date = ?`).all(datestr);
 }
 
 export function getMareSelections(datestr: string) {
@@ -37,6 +48,10 @@ export function getEpisodeSelections(datestr: string) {
 
 export function writeStory(story: string, datestr: string) {
     db.prepare(`INSERT INTO stories (story, date) VALUES (?, ?)`).run(story, datestr);
+}
+
+export function writeReview(author: string, title: string, review: string, datestr: string) {
+    db.prepare(`INSERT INTO reviews (author, title, review, selector_date) VALUES (?, ?, ?, ?)`).run(author, title, review, datestr);
 }
 
 export function writeMareSelections(mare_of_the_day: string, m6_of_the_week: string, mare_of_interest: string, datestr: string) {

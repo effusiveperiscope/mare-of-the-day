@@ -1,5 +1,5 @@
 'use server';
-import { getEpisodeSelections, getMareSelections, getStories } from './db';
+import { getEpisodeSelections, getMareSelections, getReviews, getStories } from './db';
 import { Episode, getEpisodeData } from './episodes';
 import { MareSelections } from './mares';
 import { mareDisplay } from './ui/mareDisplay';
@@ -42,4 +42,14 @@ export async function serverGetStories(nominalDate: string) {
     if (!story) { return null; }
     const sanitized = DOMPurify.sanitize(story.story);
     return sanitized;
+}
+
+export async function serverGetReviews(nominalDate: string) {
+    const reviews = await getReviews(nominalDate) as {
+        author: string,
+        title: string,
+        review: string
+    }[];
+    if (!reviews) { return null; }
+    return reviews.map(review => ({ author: review.author, title: review.title, review: DOMPurify.sanitize(review.review) }));
 }

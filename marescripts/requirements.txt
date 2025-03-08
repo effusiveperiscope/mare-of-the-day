@@ -1,2 +1,6 @@
 fandom-py
 dotenv
+cloudscraper
+bs4
+python-dotenv
+requests-toolbelt=1.0.0

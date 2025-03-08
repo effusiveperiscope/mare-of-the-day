@@ -1,11 +1,14 @@
-import { getStories, writeStory, getMareSelections, writeMareSelections, getEpisodeSelections, writeEpisodeSelections } from "./db";
+import { getStories, writeStory, getMareSelections, writeMareSelections, getEpisodeSelections, writeEpisodeSelections, getReviews, writeReview } from "./db";
 import { rawSelections as rawMareSelections } from "./mares";
 import { rawSelections as rawEpisodeSelections } from "./episodes";
 import { writeOutDate } from "./text";
-import { generateStory } from "./story";
+import { generateReviews, generateStory } from "./story";
 
+let isWorking = false;
 // Work that has to be run periodically
 async function work() {
+    if (isWorking) return;
+    isWorking = true;
     const date = new Date();
     const yesterday = new Date(date.getTime() - 24 * 60 * 60 * 1000);
     const tomorrow = new Date(date.getTime() + 24 * 60 * 60 * 1000);
@@ -28,7 +31,15 @@ async function work() {
             const story = await generateStory([mareSelections.mare_of_the_day, mareSelections.m6_of_the_week, mareSelections.mare_of_interest,])
             writeStory(story, datestr);
         }
+        // 3. Generate reviews
+        if ((await getReviews(datestr)).length === 0) {
+            const reviews = await generateReviews();
+            for (const review of reviews) {
+                writeReview(review.author, review.title, review.review, datestr);
+            }
+        }
     }
+    isWorking = false;
 }
 
 export function initializeWork() {
