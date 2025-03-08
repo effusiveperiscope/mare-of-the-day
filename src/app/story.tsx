@@ -71,7 +71,6 @@ export async function generateStory(mares: string[]): Promise<string> {
     if (completion.choices) {
         return completion.choices[0].message.content!
     } else {
-        console.log(completion)
         throw new Error('No choices received')
     }
 }
@@ -102,12 +101,10 @@ export async function generateReviews(): Promise<Review[]> {
     const reviewer = 'Twilight Sparkle';
     let prompt = `You will be provided a story to review. `
 
-    console.log('Spawning child process');
     // First: We have to grab stories from FiMFiction using a python script
     const proc = spawnAsync('python', ['story_fetch.py'], {
         cwd: 'marescripts'
     })
-    console.log('Child process spawned');
 
     await proc;
     const STORIES_FILE = 'marescripts/fimfiction_stories_data.json'
@@ -152,7 +149,7 @@ export async function generateReviews(): Promise<Review[]> {
             ],
         });
         if (completion.choices) {
-            console.log('Wrote review for ' + story.title + '. Response: ' + completion.choices[0].message.content!);
+            console.log('Wrote review for ' + story.title);
             completions.push({
                 title: story.title,
                 url: story.url,

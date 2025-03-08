@@ -49,7 +49,8 @@ export async function serverGetReviews(nominalDate: string) {
         author: string,
         title: string,
         review: string
+        url: string
     }[];
     if (!reviews) { return null; }
-    return reviews.map(review => ({ author: review.author, title: review.title, review: DOMPurify.sanitize(review.review) }));
+    return reviews.map(review => ({ author: review.author, title: review.title, review: DOMPurify.sanitize(review.review), url: review.url }));
 }

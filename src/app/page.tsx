@@ -4,6 +4,7 @@ import EpisodesList from "./ui/episodesList";
 import {} from "./work";
 import Story from "./ui/story";
 import DateDisplay from "./date_display";
+import ReviewsList from "./ui/reviews";
 export default function Home() {
   return (
     <div className="relative w-full min-h-screen flex justify-center items-center p-10">
@@ -15,7 +16,7 @@ export default function Home() {
       height="10"
       alt="Background" priority />
       </div>
-      <div className="w-9/10 bg-white/90 p-6 shadow-lg text-center overflow-hidden">
+      <div className="w-9/10 bg-white/90 p-4 shadow-lg text-center overflow-hidden">
         {/* <div className="marquee-container"> */}
           {/* <h1 className="text-4xl font-bold mb-4 marquee-content">MARES MARES MARES</h1> */}
         {/* </div> */}
@@ -31,6 +32,7 @@ export default function Home() {
         <hr className="border border-gray-300 mb-4"></hr>
         <EpisodesList />
         <hr className="border border-gray-300 mb-4"></hr>
+        <ReviewsList />
       </div>
     </div>
   );

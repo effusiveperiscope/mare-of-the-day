@@ -35,7 +35,7 @@ async function work() {
         if ((await getReviews(datestr)).length === 0) {
             const reviews = await generateReviews();
             for (const review of reviews) {
-                writeReview(review.author, review.title, review.review, datestr);
+                writeReview(review.author, review.title, review.review, review.url, datestr);
             }
         }
     }
