@@ -11,9 +11,28 @@ import random
 dotenv.load_dotenv()
 STORIES_LIMIT = 3
 STORIES_OUTPUT_FILE = "fimfiction_stories_data.json"
-RESPONSE_ENCODING = "windows-1252"
 
-def get_fimfiction_page(query='sunset shimmer #pony', url_override=None, page=1):
+# This doesn't appear to be rate limited? Or if it is, it isn't very much
+def auth(scraper, uname, pword):
+    REQUEST_URL = "https://www.fimfiction.net/ajax/login"
+    response = scraper.post(REQUEST_URL, data={"username": uname, "password": pword,
+        "otp": "", "keep_logged_in": "true"})
+
+    if response.status_code == 200:
+        print("Successfully authenticated")
+    else:
+        print(f"Failed to authenticate (status code: {response.status_code})")
+    
+    from http.cookies import SimpleCookie
+    cookies = SimpleCookie()
+    for cookie in response.headers["Set-Cookie"].split(","):
+        cookies.load(cookie)
+    return {
+        'session_token': cookies['session_token'].value,
+        'signing_key': cookies['signing_key'].value
+    }
+
+def get_fimfiction_page(scraper, query='sunset shimmer #pony', url_override=None, page=1):
     """
     Fetches search results from FimFiction.net while bypassing CloudFlare protection.
     
@@ -30,36 +49,6 @@ def get_fimfiction_page(query='sunset shimmer #pony', url_override=None, page=1)
     
     if url_override is not None:
         url = url_override
-    
-    # Custom headers that match the browser configuration
-    headers = {
-        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.5",
-        # "Accept-Encoding": "gzip, deflate, br, zstd",
-        "Connection": "keep-alive",
-        "Cookie": os.getenv("FIMFICTION_COOKIE"),
-        "Upgrade-Insecure-Requests": "1",
-        "Sec-Fetch-Dest": "document",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Site": "none",
-        "Sec-Fetch-User": "?1",
-        "Priority": "u=0, i",
-        "TE": "trailers"
-    }
-    
-    # Create a cloudscraper session
-    scraper = cloudscraper.create_scraper(
-        browser={
-            'browser': 'firefox',
-            'platform': 'linux',
-            'mobile': False
-        },
-        delay=5
-    )
-    
-    # Add the headers to the session
-    scraper.headers.update(headers)
     
     # Add retry mechanism
     max_retries = 3
@@ -151,7 +140,43 @@ def extract_stories(html_content):
     return stories
 
 if __name__ == "__main__":
-    content = get_fimfiction_page(query=
+    # Custom headers that match the browser configuration
+    headers = {
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        # "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Connection": "keep-alive",
+        "Upgrade-Insecure-Requests": "1",
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "none",
+        "Sec-Fetch-User": "?1",
+        "Priority": "u=0, i",
+        "TE": "trailers"
+    }
+    
+    # Create a cloudscraper session
+    scraper = cloudscraper.create_scraper(
+        browser={
+            'browser': 'firefox',
+            'platform': 'linux',
+            'mobile': False
+        },
+        delay=5
+    )
+    
+    # Add the headers to the session
+    scraper.headers.update(headers)
+
+    authinfo = auth(scraper, os.getenv("FIMFICTION_UNAME"), os.getenv("FIMFICTION_PWORD"))
+
+    scraper.headers.update({
+        'Cookie': f"d_browse_default=2; stylesheet=dark; "
+            f"session_token={authinfo['session_token']}; signing_key={authinfo['signing_key']}"
+    })
+
+    content = get_fimfiction_page(scraper, query=
         'words:<3000 #mlp-fim -#anthro -#fetish ( #everyone OR #teen ) -#human -#equestria-girls status:complete')
     
     if content:
@@ -167,7 +192,7 @@ if __name__ == "__main__":
             for story in stories[:STORIES_LIMIT]:
                 # https://www.fimfiction.net/story/download/252186/txt
                 story_txt_url = f"https://www.fimfiction.net/story/download/{story['id']}/txt"
-                page = get_fimfiction_page(url_override=story_txt_url)
+                page = get_fimfiction_page(scraper, url_override=story_txt_url)
                 story['text'] = page
                 export_stories.append(story)
             f.write(json.dumps(export_stories, ensure_ascii=True) + '\n')
