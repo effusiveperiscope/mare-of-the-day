@@ -28,7 +28,7 @@ export default function ReviewsList() {
         return (
             <div className="text-lg m-6">
             <div className="max-w-3xl ml-auto mr-auto text-justify" id="reviews_list">
-            <h1 className="text-3xl font-bold mb-4">Twilight's Fanfiction Corner</h1>
+            <h1 className="text-3xl font-bold mb-4">Twilight&apos;s Fanfiction Corner</h1>
                 <Image src="/images/twilight_fanfic.png" alt="Image of Twilight" className="mr-4 float-left" width="200" height="212" />
                 {reviews.map(review => (
                 <div key={review.title + writeOutDate(new Date())} className="text-justify">
