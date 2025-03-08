@@ -133,6 +133,7 @@ export async function generateReviews(): Promise<Review[]> {
         ${includeSpoilers ? '' : '- Please write a spoiler-free review. You can describe general premises, but avoid revealing major plot points.'}
         - Remember that part of your review should discuss what audiences may find the story entertaining.
         - Make your review entertaining and fitting to the personality and experiences of ${reviewer}.
+        - Remember common 'pony'-isms: e.g. 'anypony' or 'everypony' instead of 'anybody' or 'everybody', 'hoof' instead of 'hand'.
         - Strive to provide a balanced review; consider ${reviewer}'s preferences and values. She may not like every story!
         A short description of the reviewer you are acting as: ${typedProfilesData[reviewer].profile}
 
