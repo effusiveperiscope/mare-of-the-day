@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { writeOutDate } from "../text";
 import { serverGetReviews } from "../serverActions";
+import he from "he";
 import Image from "next/image";
 
 export default function ReviewsList() {
@@ -42,7 +43,7 @@ export default function ReviewsList() {
                 <hr className="border border-gray-300 m-2"></hr>
                 <b><u><a href={review.url}>{review.title}</a></u></b> by {review.author} 
                 <hr className="border border-gray-300 m-2"></hr>
-                <div className="mb-4" dangerouslySetInnerHTML={{ __html: review.review }}></div>
+                <div className="mb-4" dangerouslySetInnerHTML={{ __html: he.decode(review.review) }}></div>
                 </div>))}
             </div>
             </div>
