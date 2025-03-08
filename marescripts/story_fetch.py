@@ -26,7 +26,7 @@ def get_fimfiction_page(query='sunset shimmer #pony', url_override=None, page=1)
     """
     # Ensure the query is properly URL encoded
     encoded_query = urllib.parse.quote_plus(query)
-    url = f"https://www.fimfiction.net/stories?q={encoded_query}&page={page}"
+    url = f"https://www.fimfiction.net/stories?q={encoded_query}&page={page}&order=random"
     
     if url_override is not None:
         url = url_override
