@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { serverGetStories } from '../serverActions';
 import { writeOutDate } from "../text";
+import he from "he";
 
 export default function Story() {
   const [selections, setSelections] = useState<null|string>(null);
@@ -22,7 +23,7 @@ export default function Story() {
     return (
         <div className="text-lg m-6">
         <div className="max-w-3xl ml-auto mr-auto text-justify" id="news_story">
-         <div dangerouslySetInnerHTML={{ __html: selections }} />
+         <div dangerouslySetInnerHTML={{ __html: he.decode(selections) }} />
         </div>
         </div>
     )
