@@ -180,7 +180,7 @@ if __name__ == "__main__":
     })
 
     content = get_fimfiction_page(scraper, query=
-        'words:<2999 #mlp-fim -#anthro -#fetish -#mature -#human -#equestria-girls status:complete')
+        'words:<2999 #mlp-fim -#anthro -#fetish -#mature -#human -#equestria-girls status:complete published:week')
     
     if content:
         # Extract and process stories
