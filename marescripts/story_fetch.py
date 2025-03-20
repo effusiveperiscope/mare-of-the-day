@@ -162,9 +162,9 @@ if __name__ == "__main__":
     # Create a cloudscraper session
     scraper = cloudscraper.create_scraper(
         browser={
-            'browser': 'chrome',
-            'platform': 'android',
-            'mobile': True
+            'browser': 'firefox',
+            'platform': 'linux',
+            'mobile': False
         },
         delay=5
     )
