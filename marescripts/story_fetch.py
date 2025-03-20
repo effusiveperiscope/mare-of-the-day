@@ -11,6 +11,7 @@ import random
 dotenv.load_dotenv()
 STORIES_LIMIT = 3
 STORIES_OUTPUT_FILE = "fimfiction_stories_data.json"
+HTML_OUTPUT_FILE = "fimfiction_stories.html"
 
 # This doesn't appear to be rate limited? Or if it is, it isn't very much
 def auth(scraper, uname, pword):
@@ -57,6 +58,8 @@ def get_fimfiction_page(scraper, query='sunset shimmer #pony', url_override=None
             # Use cloudscraper to handle CloudFlare protection
             print(f"Requesting URL: {url}")
             response = scraper.get(url)
+            # with open(HTML_OUTPUT_FILE, 'w', encoding='utf-8') as f:
+                # f.write(response.text)
             
             # Check if we got a successful response
             if response.status_code == 200:
@@ -159,9 +162,9 @@ if __name__ == "__main__":
     # Create a cloudscraper session
     scraper = cloudscraper.create_scraper(
         browser={
-            'browser': 'firefox',
-            'platform': 'linux',
-            'mobile': False
+            'browser': 'chrome',
+            'platform': 'android',
+            'mobile': True
         },
         delay=5
     )
@@ -177,14 +180,12 @@ if __name__ == "__main__":
     })
 
     content = get_fimfiction_page(scraper, query=
-        'words:<3000 #mlp-fim -#anthro -#fetish ( #everyone OR #teen ) -#human -#equestria-girls status:complete')
+        'words:<2999 #mlp-fim -#anthro -#fetish -#mature -#human -#equestria-girls status:complete')
     
     if content:
-        # Save raw HTML
-        # save_to_file(content)
-        
         # Extract and process stories
         stories = extract_stories(content)
+        random.seed(time.time())
         random.shuffle(stories)
 
         export_stories = []
