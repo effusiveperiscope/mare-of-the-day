@@ -99,7 +99,6 @@ function sleep(ms: number) {
 
 export async function generateReviews(): Promise<Review[]> {
     const reviewer = 'Twilight Sparkle';
-    let prompt = `You will be provided a story to review. `
 
     // First: We have to grab stories from FiMFiction using a python script
     const proc = spawnAsync('python', ['story_fetch.py'], {
@@ -110,7 +109,6 @@ export async function generateReviews(): Promise<Review[]> {
     const STORIES_FILE = 'marescripts/fimfiction_stories_data.json'
     const data = readFileSync(STORIES_FILE, 'utf-8');
     const stories = JSON.parse(data) as StoriesData[];
-    const includeSpoilers = true;
 
     const completions: Review[] = []
 
@@ -121,7 +119,7 @@ export async function generateReviews(): Promise<Review[]> {
             apiKey: 'none',
         })
         const completion = await openai.chat.completions.create({
-            model: 'Twilight Sparkle',
+            model: reviewer,
             messages: [{role: 'user', content: story.text}]
         })
         if (completion.choices) {
