@@ -116,38 +116,14 @@ export async function generateReviews(): Promise<Review[]> {
 
     for (const story of stories) {
         console.log('Generating review for ' + story.title);
-        prompt += `\n\nTitle: ${story.title}\nStory:`
-        prompt += `===== BEGINNING OF STORY =====`
-        prompt += `\n${story.text}\n\n`
-
-        prompt += `===== END OF STORY =====`
-        prompt += `
-        - As ${reviewer}, write a short (1-2 paragraph) newspaper-style review of the story in-character.
-        - You may format your response using basic HTML formatting tags, e.g. <b>Bold</b>,
-        but do not use semantic tags like <article> or <code>. 
-        - Do not include any titles or headers.
-        - Do not include an assent like "Okay, here's my review" or "Here is a review", only your review.
-        ${includeSpoilers ? '' : '- Please write a spoiler-free review. You can describe general premises, but avoid revealing major plot points.'}
-        - Remember that part of your review should discuss what audiences may find the story entertaining.
-        - Make your review entertaining and fitting to the personality and experiences of ${reviewer}.
-        - Remember common 'pony'-isms: e.g. 'anypony' or 'everypony' instead of 'anybody' or 'everybody', 'hoof' instead of 'hand'.
-        - Strive to provide a balanced review; consider ${reviewer}'s preferences and values. She may not like every story!
-        A short description of the reviewer you are acting as: ${typedProfilesData[reviewer].profile}
-
-        Begin your review immediately, with no other text.`
-
         const openai = new OpenAI({
-            apiKey: process.env.OPENROUTER_API_KEY,
-            baseURL: 'https://openrouter.ai/api/v1',
-        });
+            baseURL: 'http://ponychats.celestia.ai:8000/api/v1',
+            apiKey: 'none',
+        })
         const completion = await openai.chat.completions.create({
-            model: 'google/gemini-2.0-flash-lite-preview-02-05:free',
-            messages: [
-                { role: 'system', content: `You are the character ${reviewer}. 
-                ` },
-                { role: 'user', content: prompt },
-            ],
-        });
+            model: 'Twilight Sparkle',
+            messages: [{role: 'user', content: story.text}]
+        })
         if (completion.choices) {
             console.log('Wrote review for ' + story.title);
             completions.push({
