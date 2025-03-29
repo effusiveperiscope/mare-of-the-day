@@ -118,6 +118,7 @@ export async function generateReviews(): Promise<Review[]> {
             baseURL: 'http://ponychats.celestia.ai:8000/api/v1',
             apiKey: 'none',
         })
+        try {
         const completion = await openai.chat.completions.create({
             model: reviewer,
             messages: [{role: 'user', content: story.text}]
@@ -130,11 +131,35 @@ export async function generateReviews(): Promise<Review[]> {
                 review: completion.choices[0].message.content!,
                 author: story.author,
             })
-        } else {
-            console.log(completion)
-            throw new Error('No choices received')
         }
+    } catch (e) {
+        console.log(e)
+    }
         await sleep(3000); // Avoid sending too many requests
     }
     return completions
+}
+
+export async function generateWorkout(): Promise<string> {
+    let prompt = `
+    Generate a calisthenics workout using no equipment, for humans. 
+    Keep the descriptions short and simple. 
+    Format your response in markdown.`
+
+    const openai = new OpenAI({
+        apiKey: process.env.OPENROUTER_API_KEY,
+        baseURL: 'https://openrouter.ai/api/v1',
+    });
+    const completion = await openai.chat.completions.create({
+        model: 'google/gemini-2.0-flash-exp:free',
+        messages: [
+            { role: 'system', content: 'You are Rainbow Dash, acting as an athletic coach.' },
+            { role: 'user', content: prompt },
+        ],
+    });
+    if (completion.choices) {
+        return completion.choices[0].message.content!
+    } else {
+        throw new Error('No choices received')
+    }
 }
