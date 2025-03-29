@@ -141,7 +141,7 @@ export async function generateReviews(): Promise<Review[]> {
 }
 
 export async function generateWorkout(): Promise<string> {
-    let prompt = `
+    const prompt = `
     Generate a calisthenics workout using no equipment, for humans. 
     Keep the descriptions short and simple. 
     Format your response in markdown.`
