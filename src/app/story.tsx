@@ -33,6 +33,35 @@ type Review = {
 
 const typedProfilesData: ProfilesData = profilesData as ProfilesData
 
+interface GenerateCompletionParameters {
+    systemPrompt: string;
+    userPrompt: string;
+    apiKey?: string;
+    model?: string;
+    customEndpoint?: string;
+}
+async function generateCompletion(
+    { systemPrompt, userPrompt, apiKey, model, customEndpoint }: GenerateCompletionParameters): Promise<string> {
+    model = model || 'google/gemini-2.0-flash-exp:free';
+    const openai = new OpenAI({
+        apiKey: apiKey,
+        baseURL: customEndpoint ? customEndpoint : 'https://openrouter.ai/api/v1',
+    });
+    const completion = await openai.chat.completions.create({
+        model: model,
+        messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt },
+        ],
+    });
+    if (completion.choices) {
+        return completion.choices[0].message.content!;
+    } else {
+        throw new Error('No choices received');
+    }
+}
+
+
 export async function generateStory(mares: string[]): Promise<string> {
     let prompt = `
     Generate a fictional news story involving the mares: ${mares}. 
@@ -57,22 +86,10 @@ export async function generateStory(mares: string[]): Promise<string> {
 
     prompt += `Begin your response immediately with no other text.`
 
-    const openai = new OpenAI({
-        apiKey: process.env.OPENROUTER_API_KEY,
-        baseURL: 'https://openrouter.ai/api/v1',
-    });
-    const completion = await openai.chat.completions.create({
-        model: 'google/gemini-2.0-flash-exp:free',
-        messages: [
-            { role: 'system', content: 'You are an entertaining writer of fictional news stories.' },
-            { role: 'user', content: prompt },
-        ],
-    });
-    if (completion.choices) {
-        return completion.choices[0].message.content!
-    } else {
-        throw new Error('No choices received')
-    }
+    return await generateCompletion({ 
+        systemPrompt: 'You are an entertaining writer of fictional news stories.',
+        userPrompt: prompt, 
+        apiKey: process.env.OPENROUTER_API_KEY});
 }
 
 function spawnAsync(command: string, args: string[], options: SpawnOptionsWithoutStdio | undefined) {
@@ -114,27 +131,19 @@ export async function generateReviews(): Promise<Review[]> {
 
     for (const story of stories) {
         console.log('Generating review for ' + story.title);
-        const openai = new OpenAI({
-            baseURL: 'http://ponychats.celestia.ai:8000/api/v1',
-            apiKey: 'none',
-        })
-        try {
-        const completion = await openai.chat.completions.create({
-            model: reviewer,
-            messages: [{role: 'user', content: story.text}]
-        })
-        if (completion.choices) {
-            console.log('Wrote review for ' + story.title);
-            completions.push({
-                title: story.title,
-                url: story.url,
-                review: completion.choices[0].message.content!,
-                author: story.author,
-            })
-        }
-    } catch (e) {
-        console.log(e)
-    }
+        completions.push({
+            title: story.title,
+            url: story.url,
+            review: await generateCompletion({
+                systemPrompt: 'You are an entertaining writer of fictional news stories.',
+                userPrompt: story.text,
+                apiKey: 'none',
+                customEndpoint: 'http://ponychats.celestia.ai:8000/api/v1', 
+                model: reviewer
+            }),
+            author: story.author
+        });
+        console.log('Done generating review for ' + story.title);
         await sleep(3000); // Avoid sending too many requests
     }
     return completions
@@ -145,21 +154,8 @@ export async function generateWorkout(): Promise<string> {
     Generate a calisthenics workout using no equipment, for humans. 
     Keep the descriptions short and simple. 
     Format your response in markdown.`
-
-    const openai = new OpenAI({
-        apiKey: process.env.OPENROUTER_API_KEY,
-        baseURL: 'https://openrouter.ai/api/v1',
-    });
-    const completion = await openai.chat.completions.create({
-        model: 'google/gemini-2.0-flash-exp:free',
-        messages: [
-            { role: 'system', content: 'You are Rainbow Dash, acting as an athletic coach.' },
-            { role: 'user', content: prompt },
-        ],
-    });
-    if (completion.choices) {
-        return completion.choices[0].message.content!
-    } else {
-        throw new Error('No choices received')
-    }
+    return await generateCompletion({
+        systemPrompt: 'You are Rainbow Dash from MLP.', 
+        userPrompt: prompt,
+        apiKey: process.env.OPENROUTER_API_KEY});
 }
