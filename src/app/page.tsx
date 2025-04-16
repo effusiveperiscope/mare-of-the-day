@@ -5,6 +5,7 @@ import {} from "./work";
 import Story from "./ui/story";
 import DateDisplay from "./date_display";
 import ReviewsList from "./ui/reviews";
+import Workouts from "./ui/workouts";
 export default function Home() {
   return (
     <div className="relative w-full min-h-screen flex justify-center items-center p-10">
@@ -33,6 +34,8 @@ export default function Home() {
         <EpisodesList />
         <hr className="border border-gray-300 mb-4"></hr>
         <ReviewsList />
+        <hr className="border border-gray-300 mb-4"></hr>
+        <Workouts />
       </div>
     </div>
   );

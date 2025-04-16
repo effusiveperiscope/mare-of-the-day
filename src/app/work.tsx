@@ -1,8 +1,8 @@
-import { getStories, writeStory, getMareSelections, writeMareSelections, getEpisodeSelections, writeEpisodeSelections, getReviews, writeReview } from "./db";
+import { getStories, writeStory, getMareSelections, writeMareSelections, getEpisodeSelections, writeEpisodeSelections, getReviews, writeReview, writeWorkout, getWorkouts } from "./db";
 import { rawSelections as rawMareSelections } from "./mares";
 import { rawSelections as rawEpisodeSelections } from "./episodes";
 import { writeOutDate } from "./text";
-import { generateReviews, generateStory } from "./story";
+import { generateReviews, generateStory, generateWorkout } from "./story";
 
 let isWorking = false;
 // Work that has to be run periodically
@@ -38,6 +38,12 @@ async function work() {
                 writeReview(review.author, review.title, review.review, review.url, datestr);
             }
         }
+        // 4. Generate workouts
+        if (!await getWorkouts(datestr)) {
+            const workout = await generateWorkout();
+            writeWorkout(workout, datestr);
+        }
+        // Hm... we're violating DRY...
     }
     isWorking = false;
 }

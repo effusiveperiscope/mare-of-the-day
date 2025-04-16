@@ -1,9 +1,10 @@
 'use server';
-import { getEpisodeSelections, getMareSelections, getReviews, getStories } from './db';
+import { getEpisodeSelections, getMareSelections, getReviews, getStories, getWorkouts } from './db';
 import { Episode, getEpisodeData } from './episodes';
 import { MareSelections } from './mares';
 import { mareDisplay } from './ui/mareDisplay';
 import DOMPurify from 'isomorphic-dompurify';
+import { marked } from 'marked';
 
 export async function serverGetMareSelections(nominalDate: string) {
     const selections = await getMareSelections(nominalDate) as MareSelections;
@@ -53,4 +54,13 @@ export async function serverGetReviews(nominalDate: string) {
     }[];
     if (!reviews) { return null; }
     return reviews.map(review => ({ author: review.author, title: review.title, review: DOMPurify.sanitize(review.review), url: review.url }));
+}
+
+export async function serverGetWorkouts(nominalDate: string) {
+    const workouts = await getWorkouts(nominalDate) as { workout: string };
+    if (!workouts) { return null; }
+    const sanitized = DOMPurify.sanitize(
+        await marked(workouts.workout)
+    );
+    return sanitized;
 }

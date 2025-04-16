@@ -30,6 +30,11 @@ db.prepare(`CREATE TABLE IF NOT EXISTS reviews (
         url TEXT,
         selector_date TEXT
     );`).run();
+db.prepare(`CREATE TABLE IF NOT EXISTS workouts (
+        id INTEGER PRIMARY KEY,
+        workout TEXT,
+        date TEXT
+    );`).run();
 
 export function getStories(datestr: string) {
     return db.prepare(`SELECT story FROM stories WHERE date = ?`).get(datestr);
@@ -47,6 +52,10 @@ export function getEpisodeSelections(datestr: string) {
     return db.prepare(`SELECT s1_2, s3_6, s7_9 FROM episodeSelections WHERE date = ?`).get(datestr);
 }
 
+export function getWorkouts(datestr: string) {
+    return db.prepare(`SELECT workout FROM workouts WHERE date = ?`).get(datestr);
+}
+
 export function writeStory(story: string, datestr: string) {
     db.prepare(`INSERT INTO stories (story, date) VALUES (?, ?)`).run(story, datestr);
 }
@@ -61,4 +70,8 @@ export function writeMareSelections(mare_of_the_day: string, m6_of_the_week: str
 
 export function writeEpisodeSelections(s1_2: string, s3_6: string, s7_9: string, datestr: string) {
     db.prepare(`INSERT INTO episodeSelections (s1_2, s3_6, s7_9, date) VALUES (?, ?, ?, ?)`).run(s1_2, s3_6, s7_9, datestr);
+}
+
+export function writeWorkout(workout: string, datestr: string) {
+    db.prepare(`INSERT INTO workouts (workout, date) VALUES (?, ?)`).run(workout, datestr);
 }
