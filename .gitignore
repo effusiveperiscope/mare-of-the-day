@@ -43,3 +43,5 @@ next-env.d.ts
 *.kra
 *.kra~
 stories.db
+marescripts/fimfiction_stories_data.json
+marescripts/fimfiction_stories.html
