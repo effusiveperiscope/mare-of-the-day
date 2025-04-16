@@ -34,7 +34,7 @@ type Review = {
 const typedProfilesData: ProfilesData = profilesData as ProfilesData
 
 interface GenerateCompletionParameters {
-    systemPrompt: string;
+    systemPrompt?: string;
     userPrompt: string;
     apiKey?: string;
     model?: string;
@@ -47,17 +47,26 @@ async function generateCompletion(
         apiKey: apiKey,
         baseURL: customEndpoint ? customEndpoint : 'https://openrouter.ai/api/v1',
     });
-    const completion = await openai.chat.completions.create({
-        model: model,
-        messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: userPrompt },
-        ],
-    });
-    if (completion.choices) {
-        return completion.choices[0].message.content!;
-    } else {
-        throw new Error('No choices received');
+    try {
+        const messages : OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [];
+        if (systemPrompt) {
+            messages.push({ role: 'system', content: systemPrompt });
+        }
+        if (userPrompt) {
+            messages.push({ role: 'user', content: userPrompt });
+        }
+        const completion = await openai.chat.completions.create({
+            model: model,
+            messages: messages,
+        });
+        if (completion.choices) {
+            return completion.choices[0].message.content!;
+        } else {
+            throw new Error('No choices received');
+        }
+    } catch (error) {
+        console.error(error);
+        throw error;
     }
 }
 
@@ -135,7 +144,6 @@ export async function generateReviews(): Promise<Review[]> {
             title: story.title,
             url: story.url,
             review: await generateCompletion({
-                systemPrompt: 'You are an entertaining writer of fictional news stories.',
                 userPrompt: story.text,
                 apiKey: 'none',
                 customEndpoint: 'http://ponychats.celestia.ai:8000/api/v1', 
