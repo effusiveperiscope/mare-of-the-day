@@ -159,11 +159,11 @@ export async function generateReviews(): Promise<Review[]> {
 
 export async function generateWorkout(): Promise<string> {
     const prompt = `
-    Generate a 10 to 15 minute calisthenics workout using no equipment, for humans. 
+    Generate a ~10-15 minute calisthenics workout using no equipment, for humans. 
+    Structure the workouts in circuit(s), sets, and reps (no times).
     Keep the descriptions short and simple. 
     Format your response in markdown.
-    Do not start with an introduction (i.e. "Alright everypony, here's a workout for you...").
-    At most you may have a sentence at the top explaining the circuit.
+    Avoid any introductory text (i.e. "Alright everypony, here's a workout for you...") aside from what is necessary to describe the workout structure.
     List the exercises, times, and repetitions; you may include a blurb next to each exercise for fun and characterization. 
     Begin your response immediately with no other text.`
     return await generateCompletion({
