@@ -3,6 +3,7 @@ import { generateSlug } from "random-word-slugs";
 import { readFileSync } from 'fs';
 import profilesData from './profiles.json';
 import { spawn, SpawnOptionsWithoutStdio } from 'child_process';
+import logger from './logger';
 
 // https://github.com/vercel/next.js/discussions/38989
 // https://github.com/vercel/next.js/discussions/46722
@@ -60,12 +61,14 @@ async function generateCompletion(
             messages: messages,
         });
         if (completion.choices) {
+            throw new Error('Test error for logging');
             return completion.choices[0].message.content!;
         } else {
             throw new Error('No choices received');
         }
     } catch (error) {
         console.error(error);
+        logger.error(error);
         throw error;
     }
 }

@@ -45,3 +45,4 @@ next-env.d.ts
 stories.db
 marescripts/fimfiction_stories_data.json
 marescripts/fimfiction_stories.html
+error.log
