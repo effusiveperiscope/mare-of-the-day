@@ -61,7 +61,6 @@ async function generateCompletion(
             messages: messages,
         });
         if (completion.choices) {
-            throw new Error('Test error for logging');
             return completion.choices[0].message.content!;
         } else {
             throw new Error('No choices received');
