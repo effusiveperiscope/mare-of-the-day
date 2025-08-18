@@ -43,7 +43,7 @@ interface GenerateCompletionParameters {
 }
 async function generateCompletion(
     { systemPrompt, userPrompt, apiKey, model, customEndpoint }: GenerateCompletionParameters): Promise<string> {
-    model = model || 'deepseek/deepseek-chat-v3-0324:free';
+    model = model || 'qwen/qwen3-coder:free';
     const openai = new OpenAI({
         apiKey: apiKey,
         baseURL: customEndpoint ? customEndpoint : 'https://openrouter.ai/api/v1',
@@ -85,6 +85,8 @@ export async function generateStory(mares: string[]): Promise<string> {
     do not include it in the text: ${generateSlug(5)}
 
     You will be given character profiles to assist you in your task.
+    The character quotes are ONLY to show you how the character typically speaks. 
+    Do not use the character quotes verbatim.
     `
 
     for (const mare of mares) {
