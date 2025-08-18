@@ -24,7 +24,8 @@ async function work() {
                 writeMareSelections(selections.mare_of_the_day, selections.m6_of_the_week, selections.mare_of_interest, datestr);
             }
         } catch (e) {
-            logger.error("Failed to generate mare selections", e);
+            logger.error(e)
+            logger.error("Failed to generate mare selections");
         }
         try {
             if (!await getEpisodeSelections(datestr)) {
@@ -32,7 +33,8 @@ async function work() {
                 writeEpisodeSelections(selections.s1_2, selections.s3_6, selections.s7_9, datestr);
             }
         } catch (e) {
-            logger.error("Failed to generate episode selections", e);
+            logger.error(e)
+            logger.error("Failed to generate episode selections");
         }
 
         // 2. Generate story
@@ -43,7 +45,8 @@ async function work() {
                 writeStory(story, datestr);
             }
         } catch (e) {
-            logger.error("Failed to generate story", e);
+            logger.error(e)
+            logger.error("Failed to generate story");
         }
         // 3. Generate reviews
         try {
@@ -54,7 +57,8 @@ async function work() {
                 }
             }
         } catch (e) {
-            logger.error("Failed to generate reviews", e);
+            logger.error(e);
+            logger.error("Failed to generate reviews");
         }
 
         // 4. Generate workouts
@@ -64,7 +68,8 @@ async function work() {
                 writeWorkout(workout, datestr);
             }
         } catch (e) {
-            logger.error("Failed to generate workout", e);
+            logger.error(e);
+            logger.error("Failed to generate workout");
         }
         // Hm... we're violating DRY...
     }
