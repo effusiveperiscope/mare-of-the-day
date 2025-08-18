@@ -43,7 +43,7 @@ interface GenerateCompletionParameters {
 }
 async function generateCompletion(
     { systemPrompt, userPrompt, apiKey, model, customEndpoint }: GenerateCompletionParameters): Promise<string> {
-    model = model || 'google/gemini-2.0-flash-exp:free';
+    model = model || 'deepseek/deepseek-chat-v3-0324:free';
     const openai = new OpenAI({
         apiKey: apiKey,
         baseURL: customEndpoint ? customEndpoint : 'https://openrouter.ai/api/v1',
@@ -148,7 +148,7 @@ export async function generateReviews(): Promise<Review[]> {
             review: await generateCompletion({
                 userPrompt: story.text,
                 apiKey: 'none',
-                customEndpoint: 'http://ponychats.celestia.ai:8000/api/v1', 
+                customEndpoint: 'http://localhost:8000/api/v1', 
                 model: reviewer
             }),
             author: story.author
