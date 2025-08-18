@@ -59,6 +59,7 @@ async function generateCompletion(
         const completion = await openai.chat.completions.create({
             model: model,
             messages: messages,
+            temperature: 0.6,
         });
         if (completion.choices) {
             return completion.choices[0].message.content!;
