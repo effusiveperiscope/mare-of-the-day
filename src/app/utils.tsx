@@ -17,7 +17,6 @@ export function weeklySelect<T>(array: T[], timeDate: Date, extraSeed: string) {
     const weekTimestamp = Math.floor(
         (timeDate.getTime() - new Date('1970-01-06').getTime()) /
         (7 * 24 * 60 * 60 * 1000)); // Weeks since January 6, 1970
-    console.log(weekTimestamp);
     const randomIndex = Math.floor(
         seedrandom(seed + weekTimestamp + extraSeed)() * array.length);
     return array[randomIndex];
