@@ -43,7 +43,7 @@ interface GenerateCompletionParameters {
 }
 async function generateCompletion(
     { systemPrompt, userPrompt, apiKey, model, customEndpoint }: GenerateCompletionParameters): Promise<string> {
-    model = model || 'qwen/qwen3-coder:free';
+    model = model || 'tngtech/deepseek-r1t2-chimera:free';
     const openai = new OpenAI({
         apiKey: apiKey,
         baseURL: customEndpoint ? customEndpoint : 'https://openrouter.ai/api/v1',
@@ -133,7 +133,7 @@ export async function generateReviews(): Promise<Review[]> {
 
     // First: We have to grab stories from FiMFiction using a python script
     const proc = spawnAsync('python', ['story_fetch.py'], {
-        cwd: '/app/mare-of-the-day/marescripts'
+        cwd: 'marescripts'
     })
 
     await proc;
