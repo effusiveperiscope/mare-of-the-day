@@ -22,8 +22,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     nodejs npm golang-go && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=builder /app/mare-of-the-day /app/mare-of-the-day
+COPY --from=builder /app/mareoftheday-reviews /app/mareoftheday-reviews
 COPY --from=builder /usr/local/lib/python3.13/site-packages /usr/local/lib/python3.13/site-packages
 COPY envs/.env.marescripts /app/mare-of-the-day/marescripts/.env
 COPY envs/.env.node /app/mare-of-the-day/.env
 COPY envs/run.sh /app/mare-of-the-day/run.sh
+EXPOSE 3000
 CMD ["bash", "/app/mare-of-the-day/run.sh"]
