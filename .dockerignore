@@ -1,0 +1,25 @@
+# Git
+.git
+.gitignore
+
+# Node.js
+node_modules
+npm-debug.log
+
+# Python
+__pycache__
+*.pyc
+.pytest_cache
+venv/
+
+# General macOS/Windows files
+.DS_Store
+Thumbs.db
+
+# IDE configuration files
+.vscode
+.idea/
+
+# Common log files and temporary files
+*.log
+tmp/
