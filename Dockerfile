@@ -40,5 +40,6 @@ COPY /envs/llm_config.json /app/mareoftheday-reviews/llm_config.json
 # Thus we have to symlink files that are expected to be in the CWD:
 RUN ln -s /app/mare-of-the-day/public /app/mare-of-the-day/.next/standalone/public
 RUN ln -s /app/mare-of-the-day/marescripts /app/mare-of-the-day/.next/standalone/marescripts
+RUN ln -s /app/mare-of-the-day/.next/static /app/mare-of-the-day/.next/standalone/.next/static
 EXPOSE 3000
 CMD ["bash", "/app/mare-of-the-day/run.sh"]
