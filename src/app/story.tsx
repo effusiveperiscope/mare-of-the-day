@@ -131,9 +131,10 @@ function sleep(ms: number) {
 export async function generateReviews(): Promise<Review[]> {
     const reviewer = 'Twilight Sparkle';
 
+    logger.error("CWD: " +process.cwd());
     // First: We have to grab stories from FiMFiction using a python script
     const proc = spawnAsync('python', ['story_fetch.py'], {
-        cwd: 'marescripts'
+        cwd: '/app/mare-of-the-day/marescripts'
     })
 
     await proc;
