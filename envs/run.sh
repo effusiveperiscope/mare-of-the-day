@@ -21,7 +21,7 @@ start_server() {
   )
 }
 
-start_server "/app/mare-of-the-day" "node .next/standalone/server.js" "mare-of-the-day"
+start_server "/app/mare-of-the-day" "node -r dotenv/config .next/standalone/server.js" "mare-of-the-day"
 start_server "/app/mare-of-the-day" "bash cloudflare-ddns.sh" "cloudflare-ddns"
 start_server "/app/mareoftheday-reviews" "python -m poetry run python -m mareoftheday" "mareoftheday-reviews"
 tail -f /dev/null
