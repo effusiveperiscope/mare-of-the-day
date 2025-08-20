@@ -35,5 +35,10 @@ COPY envs/.env.marescripts /app/mareoftheday-reviews/.env
 COPY envs/.env.node /app/mare-of-the-day/.env
 COPY envs/run.sh /app/mare-of-the-day/run.sh
 COPY envs/cloudflare-ddns.sh /app/mare-of-the-day/cloudflare-ddns.sh
+COPY /envs/llm_config.json /app/mareoftheday-reviews/llm_config.json
+# Node standalone will use the .next/standalone directory as the CWD for the server.
+# Thus we have to symlink files that are expected to be in the CWD:
+RUN ln -s /app/mare-of-the-day/public /app/mare-of-the-day/.next/standalone/public
+RUN ln -s /app/mare-of-the-day/marescripts /app/mare-of-the-day/.next/standalone/marescripts
 EXPOSE 3000
 CMD ["bash", "/app/mare-of-the-day/run.sh"]
