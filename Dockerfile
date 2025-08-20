@@ -11,9 +11,9 @@ RUN git clone https://github.com/synthbot-anon/mareoftheday-reviews.git
 WORKDIR /app/mare-of-the-day
 COPY marescripts/requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip pip3 install -r requirements.txt 
-RUN --mount=type=cache,target=/root/.npm npm install && npm run build
 ARG PULL_VAR
 RUN git pull
+RUN --mount=type=cache,target=/root/.npm npm install && npm run build
 
 FROM python:3.13.7-trixie
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
